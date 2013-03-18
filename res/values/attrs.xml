@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TimeLineView">
+        <attr name="backgroundColor" format="color" />
+        <attr name="year" format="integer" />
+        <attr name="yearSize" format="integer"/>
+        <attr name="intervalWidth" format="integer" />
+        <attr name="linesHeight" format="integer" />
+        <attr name="linesWidth" format="integer" />
+        <attr name="linesCount" format="integer" />
+        <attr name="yearColor" format="color" />
+        <attr name="linesColor" format="color" />
+        <attr name="typeface" format="integer" />
+    </declare-styleable>
+
+</resources>
