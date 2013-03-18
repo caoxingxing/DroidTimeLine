@@ -1,4 +1,4 @@
-package eu.giovannidefrancesco.DroidTimeline.widget;
+package eu.giovannidefrancesco.DroidTimeline.view;
 
 import eu.giovannidefrancesco.DroidTimeline.R;
 import android.content.Context;
@@ -8,59 +8,62 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
 
-public class TimeLineView extends View {
+public class YearView extends View {
 
 	private int mYear = 1850;
 	private int mBackgroundColor = Color.LTGRAY;
 	private int mYearColor = Color.DKGRAY;
 	private int mIntervalWidth = 30;
+	private boolean mUsesLines = true;
 	private int mLinesColor = Color.DKGRAY;
 	private int mLinesHeight = 10;
 	private int mLinesCount = -1;
 	private int mLinesWidth = 3;
 	private int mYearSize = 50;
 
-	public TimeLineView(Context context) {
+	public YearView(Context context) {
 		super(context);
 	}
 
-	public TimeLineView(Context context, AttributeSet attrs, int defStyle) {
+	public YearView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		setAttributes(context, attrs);
 	}
 
-	public TimeLineView(Context context, AttributeSet attrs) {
+	public YearView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setAttributes(context, attrs);
 	}
 
 	private void setAttributes(Context context, AttributeSet attrs) {
 		TypedArray ta = context.getTheme().obtainStyledAttributes(attrs,
-				R.styleable.TimeLineView, 0, 0);
+				R.styleable.YearView, 0, 0);
 		try {
-			mBackgroundColor = ta.getColor(
-					R.styleable.TimeLineView_backgroundColor, Color.LTGRAY);
-			mYear = ta.getInteger(R.styleable.TimeLineView_year, mYear);
-			mYearColor = ta.getColor(R.styleable.TimeLineView_yearColor,
-					Color.DKGRAY);
-			mYearSize = ta.getInteger(R.styleable.TimeLineView_yearSize,
-					mYearSize);
-			mIntervalWidth = ta.getInteger(
-					R.styleable.TimeLineView_intervalWidth, mIntervalWidth);
-			mLinesColor = ta.getColor(R.styleable.TimeLineView_linesColor,
-					Color.DKGRAY);
-			mLinesHeight = ta.getInteger(R.styleable.TimeLineView_linesHeight,
-					mLinesHeight);
-			mLinesWidth = ta.getInteger(R.styleable.TimeLineView_linesWidth,
-					mLinesWidth);
-			mLinesCount = ta.getInteger(R.styleable.TimeLineView_linesCount,
-					mLinesCount);
+			mYear = ta.getInteger(R.styleable.YearView_year, mYear);
 		} finally {
 			ta.recycle();
 		}
+	}
+	
+	
+
+	public YearView(Context context, Integer year, Integer backgroundColor,
+			Integer yearColor, Integer intervalWidth, boolean usesLines,
+			Integer linesColor, Integer linesHeight, Integer linesCount,
+			Integer linesWidth, Integer yearSize) {
+		super(context);
+		this.mYear = year;
+		this.mBackgroundColor = backgroundColor;
+		this.mYearColor = yearColor;
+		this.mIntervalWidth = intervalWidth;
+		this.mUsesLines = usesLines;
+		this.mLinesColor = linesColor;
+		this.mLinesHeight = linesHeight;
+		this.mLinesCount = linesCount;
+		this.mLinesWidth = linesWidth;
+		this.mYearSize = yearSize;
 	}
 
 	public int getYear() {
@@ -143,6 +146,15 @@ public class TimeLineView extends View {
 		this.mLinesCount = mLinesCount;
 	}
 
+	public boolean isUsesLines() {
+		return mUsesLines;
+	}
+
+	public void setmUsesLines(boolean mUsesLines) {
+		this.mUsesLines = mUsesLines;
+		this.invalidate();
+	}
+
 	@Override
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
@@ -161,24 +173,26 @@ public class TimeLineView extends View {
 		p.setColor(mYearColor);
 		p.setTextAlign(Paint.Align.CENTER);
 		p.setTextSize(mYearSize);
-		canvas.drawText(mYear + "", mYearSize + getPaddingLeft()+ 10,
+		canvas.drawText(mYear + "", mYearSize + getPaddingLeft() + 10,
 				mYearSize + getPaddingTop() + 10, p);
 
 		// lines
-		p.setColor(mLinesColor);
-		p.setStrokeWidth(mLinesWidth);
-		// middle lines
-		if (mLinesCount != -1)
-			mIntervalWidth = (getMeasuredWidth()-getPaddingLeft() - getPaddingRight())
-					/ mLinesCount;
-		for (int i = 1; i < (getMeasuredWidth()-getPaddingLeft() - getPaddingRight())
-				/ mIntervalWidth; i++) {
-			float startX = mIntervalWidth * i + getPaddingLeft();
-			float startY = getMeasuredHeight()
-					- (getMeasuredHeight() / mLinesHeight + getPaddingTop());
-			float endX = mIntervalWidth * i + getPaddingLeft();
-			float endY = getMeasuredHeight() - getPaddingBottom();
-			canvas.drawLine(startX, startY, endX, endY, p);
+		if (mUsesLines) {
+			p.setColor(mLinesColor);
+			p.setStrokeWidth(mLinesWidth);
+			// middle lines
+			if (mLinesCount != -1)
+				mIntervalWidth = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight())
+						/ mLinesCount;
+			for (int i = 1; i < (getMeasuredWidth() - getPaddingLeft() - getPaddingRight())
+					/ mIntervalWidth; i++) {
+				float startX = mIntervalWidth * i + getPaddingLeft();
+				float startY = getMeasuredHeight()
+						- (getMeasuredHeight() / mLinesHeight + getPaddingTop());
+				float endX = mIntervalWidth * i + getPaddingLeft();
+				float endY = getMeasuredHeight() - getPaddingBottom();
+				canvas.drawLine(startX, startY, endX, endY, p);
+			}
 		}
 		// end line
 		canvas.drawLine(getMeasuredWidth() - mLinesWidth - getPaddingLeft(),

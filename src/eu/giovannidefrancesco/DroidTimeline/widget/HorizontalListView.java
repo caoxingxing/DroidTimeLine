@@ -1,4 +1,3 @@
-
 /*
  * HorizontalListView.java v1.5
  *
