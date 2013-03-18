@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/eu.giovannidefrancesco.DroidTimeline"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:orientation="vertical" >
 
     <eu.giovannidefrancesco.DroidTimeline.widget.HorizontalListView
@@ -11,15 +11,14 @@
         android:layout_height="100dp" />
 
     <View
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="5dp"
         android:background="@drawable/shadow" />
 
     <eu.giovannidefrancesco.DroidTimeline.widget.TimeLineView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        app:backgroundColor="#ba0000"
-        android:layout_margin="10dp" />
+        android:layout_width="196dp"
+        android:layout_height="72dp"
+        android:layout_margin="10dp"
+        android:padding="10dp" />
 
 </LinearLayout>
