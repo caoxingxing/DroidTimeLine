@@ -8,6 +8,7 @@
     <declare-styleable name="TimeLineView">
         <attr name="startYear" format="integer" />
         <attr name="centerYear" format="integer" />
+        <attr name="endYear" format="integer" />
         <attr name="step" format="integer" />
         <attr name="backgroundColor" format="color" />
         <attr name="yearSize" format="dimension" />

@@ -16,6 +16,7 @@ public class TimeLineView extends HorizontalListView {
 
 	private int mStartYear = 1850;
 	private int mCenterYear = 1920;
+	private int mEndYear;
 	private int mStep = 10;
 	private int mBackgroundColor = Color.LTGRAY;
 	private int mYearColor = Color.DKGRAY;
@@ -55,13 +56,23 @@ public class TimeLineView extends HorizontalListView {
 					mStartYear);
 			mCenterYear = ta.getInteger(R.styleable.TimeLineView_centerYear,
 					mCenterYear);
+			mEndYear = ta.getInteger(R.styleable.TimeLineView_endYear, -1);
 			mStep = ta.getInteger(R.styleable.TimeLineView_step, mStep);
 		} finally {
 			ta.recycle();
 		}
-		setAdapter(new TimelineAdapter(context, mStep, mStartYear,
+		
+		if (mEndYear == -1) {
+			Calendar calendar = Calendar.getInstance();
+			int year = calendar.get(Calendar.YEAR);
+			mEndYear = year;
+		}
+		
+		setAdapter(new TimelineAdapter(context, mStep, mStartYear, mEndYear,
 				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
 				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+		
+		//scrollTo((mCenterYear-mStartYear)*mStep);
 	}
 
 	public static class TimelineAdapter extends BaseAdapter {
@@ -78,6 +89,7 @@ public class TimeLineView extends HorizontalListView {
 		private int mLinesCount = -1;
 		private int mLinesWidth = 3;
 		private int mYearSize = 50;
+		private int mEndYear;
 
 		public TimelineAdapter(Context ctx) {
 			super();
@@ -85,13 +97,15 @@ public class TimeLineView extends HorizontalListView {
 		}
 
 		public TimelineAdapter(Context mContext, int mStep, int mStartYear,
-				int mBackgroundColor, int mYearColor, int mIntervalWidth,
-				boolean mUsesLines, int mLinesColor, int mLinesHeight,
-				int mLinesCount, int mLinesWidth, int mYearSize) {
+				int mEndYear, int mBackgroundColor, int mYearColor,
+				int mIntervalWidth, boolean mUsesLines, int mLinesColor,
+				int mLinesHeight, int mLinesCount, int mLinesWidth,
+				int mYearSize) {
 			super();
 			this.mContext = mContext;
 			this.mStep = mStep;
 			this.mStartYear = mStartYear;
+			this.mEndYear = mEndYear;
 			this.mBackgroundColor = mBackgroundColor;
 			this.mYearColor = mYearColor;
 			this.mIntervalWidth = mIntervalWidth;
@@ -105,9 +119,7 @@ public class TimeLineView extends HorizontalListView {
 
 		@Override
 		public int getCount() {
-			Calendar calendar = Calendar.getInstance();
-			int year = calendar.get(Calendar.YEAR);
-			return (year-mStartYear)/mStep+1;
+			return (mEndYear - mStartYear) / mStep + 1;
 		}
 
 		@Override
@@ -122,19 +134,16 @@ public class TimeLineView extends HorizontalListView {
 
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			YearView v =null;
-			if(position<getCount()-1)
-			v= new YearView(mContext, mStartYear + position * mStep,
-					mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
-					mLinesColor, mLinesHeight, mLinesCount, mLinesWidth,
-					mYearSize);
-			else{
-				Calendar calendar = Calendar.getInstance();
-				int year = calendar.get(Calendar.YEAR);
-				v= new YearView(mContext, year,
-						mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
-						mLinesColor, mLinesHeight, mLinesCount, mLinesWidth,
-						mYearSize);
+			YearView v = null;
+			if (position < getCount() - 1)
+				v = new YearView(mContext, mStartYear + position * mStep,
+						mBackgroundColor, mYearColor, mIntervalWidth,
+						mUsesLines, mLinesColor, mLinesHeight, mLinesCount,
+						mLinesWidth, mYearSize);
+			else {
+				v = new YearView(mContext, mEndYear, mBackgroundColor,
+						mYearColor, mIntervalWidth, mUsesLines, mLinesColor,
+						mLinesHeight, mLinesCount, mLinesWidth, mYearSize);
 			}
 			return v;
 		}
