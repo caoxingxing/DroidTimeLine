@@ -1,15 +1,12 @@
 package eu.giovannidefrancesco.DroidTimeline.view;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import eu.giovannidefrancesco.DroidTimeline.R;
 import eu.giovannidefrancesco.DroidTimeline.widget.HorizontalListView;
 
@@ -92,7 +89,7 @@ public class TimeLineView extends HorizontalListView {
 				int mLinesCount, int mLinesWidth, int mYearSize) {
 			super();
 			this.mContext = mContext;
-			mCount=mStep;
+			mCount = mStep;
 			this.mStep = mStep;
 			this.mStartYear = mStartYear;
 			this.mBackgroundColor = mBackgroundColor;

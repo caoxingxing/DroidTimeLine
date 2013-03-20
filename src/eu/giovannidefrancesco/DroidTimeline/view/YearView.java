@@ -1,6 +1,5 @@
 package eu.giovannidefrancesco.DroidTimeline.view;
 
-import eu.giovannidefrancesco.DroidTimeline.R;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -9,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.util.AttributeSet;
 import android.view.View;
+import eu.giovannidefrancesco.DroidTimeline.R;
 
 public class YearView extends View {
 
@@ -46,8 +46,6 @@ public class YearView extends View {
 			ta.recycle();
 		}
 	}
-	
-	
 
 	public YearView(Context context, Integer year, Integer backgroundColor,
 			Integer yearColor, Integer intervalWidth, boolean usesLines,
