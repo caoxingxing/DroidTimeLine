@@ -1,5 +1,7 @@
 package eu.giovannidefrancesco.DroidTimeline.view;
 
+import java.util.Calendar;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -64,7 +66,6 @@ public class TimeLineView extends HorizontalListView {
 
 	public static class TimelineAdapter extends BaseAdapter {
 		private Context mContext;
-		private int mCount = 10;
 		private int mStep;
 		private int mStartYear;
 
@@ -89,7 +90,6 @@ public class TimeLineView extends HorizontalListView {
 				int mLinesCount, int mLinesWidth, int mYearSize) {
 			super();
 			this.mContext = mContext;
-			mCount = mStep;
 			this.mStep = mStep;
 			this.mStartYear = mStartYear;
 			this.mBackgroundColor = mBackgroundColor;
@@ -105,7 +105,9 @@ public class TimeLineView extends HorizontalListView {
 
 		@Override
 		public int getCount() {
-			return mCount;
+			Calendar calendar = Calendar.getInstance();
+			int year = calendar.get(Calendar.YEAR);
+			return (year-mStartYear)/mStep+1;
 		}
 
 		@Override
@@ -118,19 +120,21 @@ public class TimeLineView extends HorizontalListView {
 			return arg0;
 		}
 
-		public void addToCount(int i) {
-			mCount += i;
-		}
-
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
-			YearView v = new YearView(mContext, mStartYear + position * mStep,
+			YearView v =null;
+			if(position<getCount()-1)
+			v= new YearView(mContext, mStartYear + position * mStep,
 					mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
 					mLinesColor, mLinesHeight, mLinesCount, mLinesWidth,
 					mYearSize);
-			if (position == getCount() - 1) {
-				addToCount(mStep);
-				this.notifyDataSetChanged();
+			else{
+				Calendar calendar = Calendar.getInstance();
+				int year = calendar.get(Calendar.YEAR);
+				v= new YearView(mContext, year,
+						mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+						mLinesColor, mLinesHeight, mLinesCount, mLinesWidth,
+						mYearSize);
 			}
 			return v;
 		}
