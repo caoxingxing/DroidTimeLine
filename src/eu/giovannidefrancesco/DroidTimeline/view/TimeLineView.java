@@ -5,6 +5,7 @@ import java.util.Calendar;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.test.suitebuilder.annotation.Smoke;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,7 @@ import eu.giovannidefrancesco.DroidTimeline.R;
 import eu.giovannidefrancesco.DroidTimeline.widget.HorizontalListView;
 
 public class TimeLineView extends HorizontalListView {
-
+	private Context mContext;
 	private int mStartYear = 1850;
 	private int mCenterYear = 1920;
 	private int mEndYear;
@@ -32,6 +33,7 @@ public class TimeLineView extends HorizontalListView {
 		super(context, attrs);
 		TypedArray ta = context.getTheme().obtainStyledAttributes(attrs,
 				R.styleable.TimeLineView, 0, 0);
+		mContext=context;
 		try {
 			mBackgroundColor = ta.getColor(
 					R.styleable.TimeLineView_backgroundColor, mBackgroundColor);
@@ -71,9 +73,232 @@ public class TimeLineView extends HorizontalListView {
 		setAdapter(new TimelineAdapter(context, mStep, mStartYear, mEndYear,
 				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
 				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
-		
-		//scrollTo((mCenterYear-mStartYear)*mStep);
+		for(int i=1;i<=(mCenterYear-mStartYear);i++){
+			int pass=getWidth()/mStep;
+			scrollTo(pass*i);
+		}
 	}
+	
+	
+	
+
+	public int getStartYear() {
+		return mStartYear;
+	}
+
+
+
+
+	public void setStartYear(int mStartYear) {
+		this.mStartYear = mStartYear;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getCenterYear() {
+		return mCenterYear;
+	}
+
+
+
+
+	public void setCenterYear(int mCenterYear) {
+		this.mCenterYear = mCenterYear;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getEndYear() {
+		return mEndYear;
+	}
+
+
+
+
+	public void setEndYear(int mEndYear) {
+		this.mEndYear = mEndYear;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getStep() {
+		return mStep;
+	}
+
+
+
+
+	public void setStep(int mStep) {
+		this.mStep = mStep;
+	}
+
+
+
+
+	public int getBackgroundColor() {
+		return mBackgroundColor;
+	}
+
+
+
+
+	public void setBackgroundColor(int mBackgroundColor) {
+		this.mBackgroundColor = mBackgroundColor;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getYearColor() {
+		return mYearColor;
+	}
+
+
+
+
+	public void setYearColor(int mYearColor) {
+		this.mYearColor = mYearColor;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getIntervalWidth() {
+		return mIntervalWidth;
+	}
+
+
+
+
+	public void setIntervalWidth(int mIntervalWidth) {
+		this.mIntervalWidth = mIntervalWidth;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public boolean ismUsesLines() {
+		return mUsesLines;
+	}
+
+
+
+
+	public void setUsesLines(boolean mUsesLines) {
+		this.mUsesLines = mUsesLines;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getLinesColor() {
+		return mLinesColor;
+	}
+
+
+
+
+	public void setLinesColor(int mLinesColor) {
+		this.mLinesColor = mLinesColor;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getLinesHeight() {
+		return mLinesHeight;
+	}
+
+
+
+
+	public void setLinesHeight(int mLinesHeight) {
+		this.mLinesHeight = mLinesHeight;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getLinesCount() {
+		return mLinesCount;
+	}
+
+
+
+
+	public void setLinesCount(int mLinesCount) {
+		this.mLinesCount = mLinesCount;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getLinesWidth() {
+		return mLinesWidth;
+	}
+
+
+
+
+	public void setLinesWidth(int mLinesWidth) {
+		this.mLinesWidth = mLinesWidth;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
+
+	public int getYearSize() {
+		return mYearSize;
+	}
+
+
+
+
+	public void setYearSize(int mYearSize) {
+		this.mYearSize = mYearSize;
+		setAdapter(new TimelineAdapter(mContext, mStep, mStartYear, mEndYear,
+				mBackgroundColor, mYearColor, mIntervalWidth, mUsesLines,
+				mLinesColor, mLinesHeight, mLinesCount, mLinesWidth, mYearSize));
+	}
+
+
+
 
 	public static class TimelineAdapter extends BaseAdapter {
 		private Context mContext;
@@ -90,11 +315,6 @@ public class TimeLineView extends HorizontalListView {
 		private int mLinesWidth = 3;
 		private int mYearSize = 50;
 		private int mEndYear;
-
-		public TimelineAdapter(Context ctx) {
-			super();
-			this.mContext = ctx;
-		}
 
 		public TimelineAdapter(Context mContext, int mStep, int mStartYear,
 				int mEndYear, int mBackgroundColor, int mYearColor,
@@ -116,6 +336,7 @@ public class TimeLineView extends HorizontalListView {
 			this.mLinesWidth = mLinesWidth;
 			this.mYearSize = mYearSize;
 		}
+		
 
 		@Override
 		public int getCount() {
@@ -135,16 +356,20 @@ public class TimeLineView extends HorizontalListView {
 		@Override
 		public View getView(int position, View convertView, ViewGroup parent) {
 			YearView v = null;
-			if (position < getCount() - 1)
+			if (position < getCount() - 1){
 				v = new YearView(mContext, mStartYear + position * mStep,
 						mBackgroundColor, mYearColor, mIntervalWidth,
 						mUsesLines, mLinesColor, mLinesHeight, mLinesCount,
 						mLinesWidth, mYearSize);
+			v.setId(mStartYear + position * mStep);
+			}
 			else {
 				v = new YearView(mContext, mEndYear, mBackgroundColor,
 						mYearColor, mIntervalWidth, mUsesLines, mLinesColor,
 						mLinesHeight, mLinesCount, mLinesWidth, mYearSize);
+				v.setId(mEndYear);
 			}
+			
 			return v;
 		}
 
