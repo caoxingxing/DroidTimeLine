@@ -59,7 +59,7 @@ public class YearView extends View {
 		
 		this.mBackgroundResource = backgroundResource;
 		
-		if(mBackgroundResource!=null)
+		if(mBackgroundResource>-1)
 			setBackgroundDrawable(getResources().getDrawable(mBackgroundResource));
 		
 		this.mYearColor = yearColor;
