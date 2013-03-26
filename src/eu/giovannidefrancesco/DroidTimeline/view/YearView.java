@@ -14,6 +14,7 @@ public class YearView extends View {
 
 	private int mYear = 1850;
 	private int mBackgroundColor = Color.LTGRAY;
+	private Integer mBackgroundResource = null;
 	private int mYearColor = Color.DKGRAY;
 	private int mIntervalWidth = 30;
 	private boolean mUsesLines = true;
@@ -48,12 +49,19 @@ public class YearView extends View {
 	}
 
 	public YearView(Context context, Integer year, Integer backgroundColor,
-			Integer yearColor, Integer intervalWidth, boolean usesLines,
-			Integer linesColor, Integer linesHeight, Integer linesCount,
-			Integer linesWidth, Integer yearSize) {
+			Integer backgroundResource, Integer yearColor,
+			Integer intervalWidth, boolean usesLines, Integer linesColor,
+			Integer linesHeight, Integer linesCount, Integer linesWidth,
+			Integer yearSize) {
 		super(context);
 		this.mYear = year;
 		this.mBackgroundColor = backgroundColor;
+		
+		this.mBackgroundResource = backgroundResource;
+		
+		if(mBackgroundResource!=null)
+			setBackgroundDrawable(getResources().getDrawable(mBackgroundResource));
+		
 		this.mYearColor = yearColor;
 		this.mIntervalWidth = intervalWidth;
 		this.mUsesLines = usesLines;
@@ -162,10 +170,12 @@ public class YearView extends View {
 		p.setAntiAlias(true);
 
 		// background
-		p.setColor(mBackgroundColor);
-		canvas.drawRect(getPaddingTop(), getPaddingLeft(), getMeasuredWidth()
-				- getPaddingRight(), getMeasuredHeight() - getPaddingBottom(),
-				p);
+		if (mBackgroundResource <0) {
+			p.setColor(mBackgroundColor);
+			canvas.drawRect(getPaddingTop(), getPaddingLeft(),
+					getMeasuredWidth() - getPaddingRight(), getMeasuredHeight()
+							- getPaddingBottom(), p);
+		}
 
 		// Year
 		p.setColor(mYearColor);

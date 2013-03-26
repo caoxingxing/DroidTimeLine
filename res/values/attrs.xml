@@ -10,6 +10,7 @@
         <attr name="centerYear" format="integer" />
         <attr name="endYear" format="integer" />
         <attr name="step" format="integer" />
+        <attr name="backgroundResources" format="reference"/>
         <attr name="backgroundColor" format="color" />
         <attr name="yearSize" format="dimension" />
         <attr name="intervalWidth" format="integer" />
