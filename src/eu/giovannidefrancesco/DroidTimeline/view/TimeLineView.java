@@ -20,8 +20,8 @@ public class TimeLineView extends HorizontalListView {
 	private int mCenterYear = 1920;
 	private int mEndYear;
 	private int mStep = 10;
-	private int mBackgroundColor = Color.LTGRAY;
-	private Integer mBackgroundResource = -1;
+	private int mBackgroundColor = -1;
+	private Integer mBackgroundResource = R.drawable.timeline_default_gradient;
 	private int mYearColor = Color.DKGRAY;
 	private int mIntervalWidth = 30;
 	private boolean mUsesLines = true;
@@ -42,7 +42,7 @@ public class TimeLineView extends HorizontalListView {
 
 			mBackgroundResource = ta.getResourceId(
 					R.styleable.TimeLineView_backgroundResources,
-					mBackgroundResource);
+					R.drawable.timeline_default_gradient);
 
 			mYearColor = ta.getColor(R.styleable.TimeLineView_yearColor,
 					mYearColor);
@@ -244,8 +244,8 @@ public class TimeLineView extends HorizontalListView {
 		private int mStep;
 		private int mStartYear;
 
-		private int mBackgroundColor = Color.LTGRAY;
-		private Integer mBackgroundResource = null;
+		private int mBackgroundColor = -1;
+		private Integer mBackgroundResource = R.drawable.timeline_default_gradient;
 		private int mYearColor = Color.DKGRAY;
 		private int mIntervalWidth = 30;
 		private boolean mUsesLines = true;
@@ -297,19 +297,24 @@ public class TimeLineView extends HorizontalListView {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			YearView v = null;
 			if (position < getCount() - 1) {
-				v = new YearView(mContext, mStartYear + position * mStep,
-						mBackgroundColor, mBackgroundResource, mYearColor,
-						mIntervalWidth, mUsesLines, mLinesColor, mLinesHeight,
-						mLinesCount, mLinesWidth, mYearSize);
+				v = new YearView(mContext);
+				v.setYear(mStartYear + position * mStep);
 				v.setId(mStartYear + position * mStep);
 			} else {
-				v = new YearView(mContext, mEndYear, mBackgroundColor,
-						mYearColor, mBackgroundResource, mIntervalWidth,
-						mUsesLines, mLinesColor, mLinesHeight, mLinesCount,
-						mLinesWidth, mYearSize);
+				v = new YearView(mContext);
+				v.setYear(mEndYear);
 				v.setId(mEndYear);
 			}
-
+			v.setBackgroundColor(mBackgroundColor);
+			v.setBackgroundResource(mBackgroundResource);
+			v.setLinesColor(mLinesColor);
+			v.setLinesCount(mLinesCount);
+			v.setLinesHeight(mLinesHeight);
+			v.setLinesWidth(mLinesWidth);
+			v.setIntervalWidth(mIntervalWidth);
+			v.setYearSize(mYearSize);
+			v.setYearColor(mYearColor);
+			v.setUseLines(mUsesLines);
 			return v;
 		}
 

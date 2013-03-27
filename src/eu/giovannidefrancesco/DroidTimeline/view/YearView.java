@@ -13,8 +13,8 @@ import eu.giovannidefrancesco.DroidTimeline.R;
 public class YearView extends View {
 
 	private int mYear = 1850;
-	private int mBackgroundColor = Color.LTGRAY;
-	private Integer mBackgroundResource = null;
+	private int mBackgroundColor = -1;
+	private Integer mBackgroundResource = R.drawable.timeline_default_gradient;
 	private int mYearColor = Color.DKGRAY;
 	private int mIntervalWidth = 30;
 	private boolean mUsesLines = true;
@@ -23,9 +23,14 @@ public class YearView extends View {
 	private int mLinesCount = -1;
 	private int mLinesWidth = 3;
 	private int mYearSize = 50;
+	private Paint paint;
 
 	public YearView(Context context) {
 		super(context);
+		
+		paint = new Paint();
+		paint.setStyle(Style.FILL);
+		paint.setAntiAlias(true);
 	}
 
 	public YearView(Context context, AttributeSet attrs, int defStyle) {
@@ -46,30 +51,6 @@ public class YearView extends View {
 		} finally {
 			ta.recycle();
 		}
-	}
-
-	public YearView(Context context, Integer year, Integer backgroundColor,
-			Integer backgroundResource, Integer yearColor,
-			Integer intervalWidth, boolean usesLines, Integer linesColor,
-			Integer linesHeight, Integer linesCount, Integer linesWidth,
-			Integer yearSize) {
-		super(context);
-		this.mYear = year;
-		this.mBackgroundColor = backgroundColor;
-		
-		this.mBackgroundResource = backgroundResource;
-		
-		if(mBackgroundResource>-1)
-			setBackgroundDrawable(getResources().getDrawable(mBackgroundResource));
-		
-		this.mYearColor = yearColor;
-		this.mIntervalWidth = intervalWidth;
-		this.mUsesLines = usesLines;
-		this.mLinesColor = linesColor;
-		this.mLinesHeight = linesHeight;
-		this.mLinesCount = linesCount;
-		this.mLinesWidth = linesWidth;
-		this.mYearSize = yearSize;
 	}
 
 	public int getYear() {
@@ -107,6 +88,21 @@ public class YearView extends View {
 		this.mIntervalWidth = mIntervalWidth;
 		this.invalidate();
 	}
+	
+
+	public Integer getBackgroundResource() {
+		return mBackgroundResource;
+	}
+	public void setUseLines(boolean use){
+		this.mUsesLines=use;
+		this.invalidate();
+	}
+
+	public void setBackgroundResource(Integer mBackgroundResource) {
+		this.mBackgroundResource = mBackgroundResource;
+		super.setBackgroundResource(mBackgroundResource);
+		this.invalidate();
+	}
 
 	public int getLinesColor() {
 		return mLinesColor;
@@ -141,6 +137,7 @@ public class YearView extends View {
 
 	public void setYearSize(int mYearSize) {
 		this.mYearSize = mYearSize;
+		paint.setTextSize(mYearSize);
 		this.invalidate();
 	}
 
@@ -162,32 +159,68 @@ public class YearView extends View {
 	}
 
 	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int desiredWidth = 200;
+		int desiredHeight = 100;
+
+		int widthMode = MeasureSpec.getMode(widthMeasureSpec);
+		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+		int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+		int heightSize = MeasureSpec.getSize(heightMeasureSpec);
+
+		int width;
+		int height;
+
+		// Measure Width
+		if (widthMode == MeasureSpec.EXACTLY) {
+			// Must be this size
+			width = widthSize;
+		} else if (widthMode == MeasureSpec.AT_MOST) {
+			// Can't be bigger than...
+			width = Math.min(desiredWidth, widthSize);
+		} else {
+			// Be whatever you want
+			width = desiredWidth;
+		}
+
+		// Measure Height
+		if (heightMode == MeasureSpec.EXACTLY) {
+			// Must be this size
+			height = heightSize;
+		} else if (heightMode == MeasureSpec.AT_MOST) {
+			// Can't be bigger than...
+			height = Math.min(desiredHeight, heightSize);
+		} else {
+			// Be whatever you want
+			height = desiredHeight;
+		}
+
+		setMeasuredDimension(width, height);
+	}
+
+	@Override
 	public void draw(Canvas canvas) {
 		super.draw(canvas);
 
-		Paint p = new Paint();
-		p.setStyle(Style.FILL);
-		p.setAntiAlias(true);
-
 		// background
-		if (mBackgroundResource <0) {
-			p.setColor(mBackgroundColor);
+		if (mBackgroundColor!= -1) {
+			paint.setColor(mBackgroundColor);
 			canvas.drawRect(getPaddingTop(), getPaddingLeft(),
 					getMeasuredWidth() - getPaddingRight(), getMeasuredHeight()
-							- getPaddingBottom(), p);
+							- getPaddingBottom(), paint);
 		}
 
 		// Year
-		p.setColor(mYearColor);
-		p.setTextAlign(Paint.Align.CENTER);
-		p.setTextSize(mYearSize);
+		paint.setColor(mYearColor);
+		paint.setTextAlign(Paint.Align.CENTER);
+		paint.setTextSize(mYearSize);
 		canvas.drawText(mYear + "", mYearSize + getPaddingLeft() + 10,
-				mYearSize + getPaddingTop() + 10, p);
+				mYearSize + getPaddingTop() + 5, paint);
 
 		// lines
 		if (mUsesLines) {
-			p.setColor(mLinesColor);
-			p.setStrokeWidth(mLinesWidth);
+			paint.setColor(mLinesColor);
+			paint.setStrokeWidth(mLinesWidth);
 			// middle lines
 			if (mLinesCount != -1)
 				mIntervalWidth = (getMeasuredWidth() - getPaddingLeft() - getPaddingRight())
@@ -199,14 +232,13 @@ public class YearView extends View {
 						- (getMeasuredHeight() / mLinesHeight + getPaddingTop());
 				float endX = mIntervalWidth * i + getPaddingLeft();
 				float endY = getMeasuredHeight() - getPaddingBottom();
-				canvas.drawLine(startX, startY, endX, endY, p);
+				canvas.drawLine(startX, startY, endX, endY, paint);
 			}
 		}
 		// end line
 		canvas.drawLine(getMeasuredWidth() - mLinesWidth - getPaddingLeft(),
 				getPaddingTop(), getMeasuredWidth() - mLinesWidth
 						- getPaddingRight(), getMeasuredHeight()
-						- getPaddingBottom(), p);
-		p = null;
+						- getPaddingBottom(), paint);
 	}
 }
