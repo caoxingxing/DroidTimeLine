@@ -161,7 +161,7 @@ public class YearView extends View {
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		int desiredWidth = 200;
-		int desiredHeight = 100;
+		int desiredHeight = 150;
 
 		int widthMode = MeasureSpec.getMode(widthMeasureSpec);
 		int widthSize = MeasureSpec.getSize(widthMeasureSpec);
